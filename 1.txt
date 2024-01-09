@@ -1,0 +1,95 @@
+Qmni axal klass da wer:
+
+
+    internal class FirstClass
+    {
+        private int number;
+
+        public int tviseba1
+        {
+            get { return number; }
+            set { 
+                if(value > 21 && value %3 == 0)
+                {
+                    number = value; 
+                }
+            }
+        }
+    }
+
+
+Mtavar kodshi, button1 awvebi orjer da cvli kods button1 dan button4 mde:
+
+
+ private void button1_Click(object sender, EventArgs e)
+        {
+            int value = int.Parse(textBox1.Text);
+            FirstClass object1 = new FirstClass();
+            object1.tviseba1 = value;
+
+            label1.Text = object1.tviseba1.ToString();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SqlConnection connection = new SqlConnection("server=LAPTOP-B456AJ0D\\SQLEXPRESS; database=Shekveta; Integrated Security = True");
+            connection.Open();
+
+            SqlCommand command1 = connection.CreateCommand();
+
+            command1.CommandText = "SELECT AVG(xelfasi) FROM Personali WHERE staji > 10";
+            Object obj = command1.ExecuteScalar();
+
+            label2.Text = obj.ToString();
+
+            connection.Close();
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            int[] array = new int[10000];
+            Random randomizer = new Random();
+
+            for (int i=0; i<array.Length; i++)
+            {
+                array[i] = randomizer.Next(0, 50000);
+            }
+
+            var result = from n in array
+                where n > 15000
+                select n;
+            int count = 0;
+            foreach (int n in result)
+            {
+                count++;
+            }
+
+            label3.Text = count.ToString();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            int find_key = Convert.ToInt32(textBox2.Text);
+            SqlConnection conn = new
+            SqlConnection("server=LAPTOP-B456AJ0D\\SQLEXPRESS; database=Shekveta; Integrated Security = True");
+
+            conn.Open();
+            SqlDataAdapter myAdapter = new SqlDataAdapter("SELECT * FROM Shemkveti", conn);
+
+            DataSet myDataset = new DataSet();
+
+            DataColumn[] keys = new DataColumn[1];
+            keys[0] = myDataset.Tables["Shemkveti"].Columns["shemkvetiID"];
+            myDataset.Tables["Shemkveti"].PrimaryKey = keys;
+            
+            DataRow findRow = myDataset.Tables["Shemkveti"].Rows.Find(find_key);
+            if (findRow != null)
+            {
+                label1.Text = "STRIQONI VER MOIDZEBNA: ";
+                label1.Text += findRow["gvari"] + " " + findRow["qalaqi"].ToString() + " ";
+            }
+            else label1.Text = "STRIQONI VER MOIDZEBNA";
+           
+            conn.Close();
+        }
